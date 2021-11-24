@@ -1,4 +1,3 @@
-
 class CellState:
     # Don't show these attributes in gui
     excludeAttr = ['id', 'divideFlag', 'ends','cellAdh']

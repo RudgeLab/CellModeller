@@ -20,6 +20,7 @@ import numpy as np
 class PyGLCMViewer(PyGLWidget):
 
     setSavePicklesToggle = pyqtSignal(bool)
+    setGrab = pyqtSignal(bool)
     selectedCell = pyqtSignal(str) #emit selected cell info
     selectedName = -1
     dt = 0.05
@@ -32,6 +33,7 @@ class PyGLCMViewer(PyGLWidget):
         self.renderInfo = None
         self.sim = None
         self.run = False
+        self.grab = False
         self.frameNo = 0
         self.loadingFromPickle = False
         self.clPlatformNum=0
@@ -121,6 +123,11 @@ class PyGLCMViewer(PyGLWidget):
         self.run = run
         if run:
             self.frameNo += 1
+
+    @pyqtSlot(bool)
+    def toggleGrab(self, grab):
+        print('toggleGrab')
+        self.grab = grab
 
     @pyqtSlot(bool)
     def toggleSavePickles(self, save):
@@ -234,6 +241,9 @@ class PyGLCMViewer(PyGLWidget):
                     self.updateSelectedCell()
                     if self.run:
                         self.frameNo += 1
+                    if self.grab and self.frameNo%1 == 0:
+                        im = self.grabFrameBuffer()
+                        im.save('cellmodeller-%05d.png'%self.frameNo)
     
     def updateSelectedCell(self):
         if self.sim:
@@ -285,7 +295,7 @@ class PyGLCMViewer(PyGLWidget):
 
     def paintGL(self):
         PyGLWidget.paintGL(self)
-        glClearColor(0.5,0.5,0.5,0.0)
+        glClearColor(1,1,1,0)
         glClear(GL_COLOR_BUFFER_BIT)
         glMatrixMode(GL_MODELVIEW)
         glPushMatrix()
@@ -295,7 +305,7 @@ class PyGLCMViewer(PyGLWidget):
         # Draw a grid in xy plane
         glEnable(GL_DEPTH_TEST)
         glDisable(GL_LIGHTING)
-        glColor3f(1.0, 1.0, 1.0)
+        glColor3f(0.5, 0.5, 0.5)
         glEnable(GL_LINE_SMOOTH)
         glLineWidth(1.0)
         glBegin(GL_LINES)

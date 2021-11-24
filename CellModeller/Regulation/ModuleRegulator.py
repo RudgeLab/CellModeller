@@ -13,7 +13,7 @@ class ModuleRegulator:
         self.signal = signalling
         # Simulator is responsible for loading the model as a python module
         # This class uses the module imported by Simulator
-        self.module = sim.module 
+        self.module = sim.module
 
     def addCell(self, cellState, **kwargs):
         self.module.init(cellState, **kwargs)

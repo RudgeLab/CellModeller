@@ -10,6 +10,7 @@ import inspect
 import imp
 import configparser
 import importlib
+import time
 
 class Simulator:
     """
@@ -111,6 +112,9 @@ visualised.
         # Call the user-defined setup function on ourself
         self.module.setup(self)
 
+    def __del__(self):
+        self.CLQueue.finish()
+
     def setSaveOutput(self, save):
         self.saveOutput = save
         if save and (not self.dataOutputInitialised):
@@ -176,7 +180,7 @@ visualised.
         self.reg = reg
         self.sig = sig
 
-        self.phys.setRegulator(reg)
+        # self.phys.setRegulator(reg)
 
         self.reg.setBiophysics(phys)
 
@@ -321,7 +325,7 @@ visualised.
         self.reg.divide(pState, d1State, d2State)
 
     ## Add a new cell to the simulator
-    def addCell(self, cellType=0, cellAdh=0, length=3.5, **kwargs):
+    def addCell(self, cellType=0, cellAdh=0, length=3.5, pos=(0, 0, 0), dir=(1, 0, 0), **kwargs):
         cid = self.next_id()
         cs = CellState(cid)
         cs.length = length
@@ -336,7 +340,21 @@ visualised.
         self.reg.addCell(cs)
         if self.sig:
             self.sig.addCell(cs)
-        self.phys.addCell(cs, **kwargs)
+        if dir[2] == 0:
+            polar_1 = numpy.pi / 2
+        else:
+            polar_1 = numpy.arctan(numpy.sqrt(dir[0]**2 + dir[1]**2)/dir[2])
+            if dir[2] < 0:
+                polar_1 += numpy.pi
+        polar_2 = numpy.arctan(dir[1] / dir[0])
+        if dir[0] > 0 and dir[1] < 0:
+            polar_2 += 2 * numpy.pi
+        elif dir[0] == 0:
+            polar_2 = numpy.pi / 2 * numpy.sign(dir[1])
+        elif dir[0] < 0:
+            polar_2 += numpy.pi
+
+        self.phys.addCell(*pos, polar_1, polar_2)
 
     #---
     # Some functions to modify existing cells (e.g. from GUI)
@@ -349,27 +367,40 @@ visualised.
     ## Proceed to the next simulation step
     # This method is where objects phys, reg, sig and integ are called
     def step(self):
+        start = time.time()
         self.reg.step(self.dt)
         states = dict(self.cellStates)
         for (cid,state) in list(states.items()):
             state.time = self.stepNum * self.dt
             if state.divideFlag:
                 self.divide(state) #neighbours no longer current
-
-        self.phys.set_cells()
-        while not self.phys.step(self.dt): #neighbours are current here
-            pass
-        if self.sig:
-            self.sig.step(self.dt)
+        # self.phys.set_cells()
+        self.phys.step() #neighbours are current here
         if self.integ:
             self.integ.step(self.dt)
+        if self.sig:
+            self.sig.step(self.dt)
 
         if self.saveOutput and self.stepNum%self.pickleSteps==0:
             self.writePickle()
 
         self.stepNum += 1
+        self.updateCellState()
+        end = time.time()
+        #print('sim step took %g'%(end-start))
         return True
 
+    def updateCellState(self):
+        # originally this is done in the biophysics module, but when
+        # it is written in c++ it makes more sense to do it here
+        for state in list(self.cellStates.values()):
+            cid = state.id
+            i = state.idx
+
+            state.vel = [self.phys.cell_centers[3*i+j]-state.pos[j] for j in range(3)]
+            state.pos = [self.phys.cell_centers[3*i+j] for j in range(3)]
+            state.dir = [self.phys.cell_polarization[3*i+j] for j in range(3)]
+            state.radius = self.phys.radius
 
     ## Import cells to the simulator from csv file. The file contains a list of 7-coordinates {pos,dir,len} (comma delimited) of each cell - also, there should be no cells around - ie run this from an empty model instead of addcell
     def importCells_file(self, filename):
@@ -393,17 +424,20 @@ visualised.
         data['lineage'] = self.lineage
         data['moduleStr'] = self.moduleOutput
         data['moduleName'] = self.moduleName
+        #data = self.integ.saveData(data)
+        #data = self.sig.saveData(data)
+        
         if self.integ:
-        #    print("Writing new pickle format")
             data['specData'] = self.integ.levels
-        if self.sig:
+        if self.sig and self.sig.isGrid:
             data['sigGridOrig'] = self.sig.gridOrig
             data['sigGridDim'] = self.sig.gridDim
             data['sigGridSize'] = self.sig.gridSize
-        if self.sig and self.integ:
-            data['sigGrid'] = self.integ.signalLevel
-            data['sigData'] = self.integ.cellSigLevels
-            data['sigGrid'] = self.integ.signalLevel
+            if self.integ:
+                data['sigGrid'] = self.integ.signalLevel
+                data['sigData'] = self.integ.cellSigLevels
+                data['sigGrid'] = self.integ.signalLevel
+
         pickle.dump(data, outfile, protocol=-1)
         #output csv file with cell pos,dir,len - sig?
 

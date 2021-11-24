@@ -7,10 +7,18 @@ import random
 #import pygame # helper module for text rendering - turned off to see if it suppresses segfaults
 #from pyopencl.array import vec
 
-class GLSphereRenderer:
-        def __init__(self, sim, properties=None, scales = None):
+class GLPointRenderer:
+        def __init__(self, sim, properties=None, scales = None, 
+                                draw_axis=False, 
+                                draw_nbr_dir=False,
+                                draw_gradient=False,
+                                draw_sphere=False, 
+                                sphere_radius=0,
+                                sphere_color=[0,0,0,1]):
+
                 self.ncells_list = 0
                 self.ncells_names_list = 0
+                self.stepNum = -1
                 self.dlist = None
                 self.dlist_names = None
                 self.cellcol = [1, 1, 1] 
@@ -18,6 +26,11 @@ class GLSphereRenderer:
                 self.quad = gluNewQuadric()
                 self.properties = properties
                 self.scales = scales
+                self.draw_axis = draw_axis
+                self.draw_nbr_dir = draw_nbr_dir
+                self.draw_sphere = draw_sphere
+                self.sphere_radius = sphere_radius
+                self.sphere_color = sphere_color
 
         def init_gl(self):
                 pass
@@ -28,6 +41,23 @@ class GLSphereRenderer:
                 index = glGenLists(1)
                 glNewList(index, GL_COMPILE)
                 self.render_cells()
+
+                # Draw sphere
+                if self.draw_sphere:
+                    glDepthFunc(GL_LESS)
+                    glDisable(GL_CULL_FACE)
+                    glPolygonMode(GL_FRONT, GL_FILL)
+
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA)
+
+                    glMatrixMode(GL_MODELVIEW)
+                    glPushMatrix()
+                    glTranslatef(0, 0, 0)
+                    glColor4fv(self.sphere_color)
+                    gluSphere(self.quad, self.sphere_radius, 64, 64)
+                    glPopMatrix() 
+
                 glEndList()
                 self.dlist = index
 
@@ -43,19 +73,12 @@ class GLSphereRenderer:
         def render_gl(self, selection=None):
                 cells = self.sim.cellStates.values()
                 states = self.sim.cellStates.items()
-        # FIXED =============================================================================
-                # Before, the renderer would only draw cells when the number of cells changed.
-                # Now it draws them whenever render_gl is called (by paintGL in PyGLCMViewer.py)
-                #if len(cells)!=self.ncells_list or len(cells)<500:
-                #        self.build_list(cells)
-                #        self.ncells_list = len(cells)
-
-                #if len(cells)!=self.ncells_list:
-                #    self.build_list(cells)
-                #    self.ncells_list = len(cells)
-        #====================================================================================
-                #glCallList(self.dlist)
-                self.render_cells(selection=selection)
+                if self.sim.stepNum > self.stepNum:
+                    self.build_list(cells)
+                    self.ncells_list = len(cells)
+                    self.stepNum = self.sim.stepNum
+                glCallList(self.dlist)
+                #self.render_cells(selection=selection)
 
 
         def renderNames_gl(self, selection=None):
@@ -73,6 +96,124 @@ class GLSphereRenderer:
                 for cell in self.sim.cellStates.values():
                         l = cell.length
                         p = cell.pos
+                        r = cell.radius
+                
+                        cid = cell.id
+                        glPushName(cid) 
+        
+                        glMatrixMode(GL_MODELVIEW)
+                        glPushMatrix()
+                        glTranslatef(p[0],p[1],p[2])
+                        gluSphere(self.quad, r, 8, 8)
+                        glPopMatrix() 
+
+                        glPopName()
+
+                glEnable(GL_LIGHTING)
+
+        def render_cells(self, selection=None):
+                glDisable(GL_LIGHTING)
+                glMatrixMode(GL_MODELVIEW)
+                glPointSize(20)
+                glBegin(GL_POINTS)
+                cells = self.sim.cellStates.values()
+                for cell in cells:
+                        #self.render_cell(cell, selection)
+                        glColor3fv(cell.color)
+                        glVertex3fv(cell.pos)
+                glEnd()
+
+class GLSphereRenderer:
+        def __init__(self, sim, properties=None, scales = None, 
+                                draw_axis=False, 
+                                draw_nbr_dir=False,
+                                draw_gradient=False,
+                                draw_sphere=False, 
+                                sphere_radius=0,
+                                sphere_color=[0,0,0,1]):
+
+                self.ncells_list = 0
+                self.ncells_names_list = 0
+                self.stepNum = -1
+                self.dlist = None
+                self.dlist_names = None
+                self.cellcol = [1, 1, 1] 
+                self.sim = sim 
+                self.quad = gluNewQuadric()
+                self.properties = properties
+                self.scales = scales
+                self.draw_axis = draw_axis
+                self.draw_nbr_dir = draw_nbr_dir
+                self.draw_gradient = draw_gradient
+                self.draw_sphere = draw_sphere
+                self.sphere_radius = sphere_radius
+                self.sphere_color = sphere_color
+
+        def init_gl(self):
+                pass
+        
+        def build_list(self, cells):
+                if self.dlist:
+                        glDeleteLists(self.dlist, 1)
+                index = glGenLists(1)
+                glNewList(index, GL_COMPILE)
+                self.render_cells()
+
+                # Draw sphere
+                if self.draw_sphere:
+                    glDepthFunc(GL_LESS)
+                    glDisable(GL_CULL_FACE)
+                    glPolygonMode(GL_FRONT, GL_FILL)
+
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA)
+
+                    glMatrixMode(GL_MODELVIEW)
+                    glPushMatrix()
+                    glTranslatef(0, 0, 0)
+                    glColor4fv(self.sphere_color)
+                    gluSphere(self.quad, self.sphere_radius, 64, 64)
+                    glPopMatrix() 
+
+                glEndList()
+                self.dlist = index
+
+        def build_list_names(self, cells):
+                if self.dlist_names:
+                        glDeleteLists(self.dlist_names, 1)
+                index = glGenLists(1)
+                glNewList(index, GL_COMPILE)
+                self.render_cell_names()
+                glEndList()
+                self.dlist_names = index
+
+        def render_gl(self, selection=None):
+                cells = self.sim.cellStates.values()
+                states = self.sim.cellStates.items()
+                if self.sim.stepNum > self.stepNum:
+                    self.build_list(cells)
+                    self.ncells_list = len(cells)
+                    self.stepNum = self.sim.stepNum
+                glCallList(self.dlist)
+                #self.render_cells(selection=selection)
+
+
+        def renderNames_gl(self, selection=None):
+                #cells = self.sim.cellStates.values()
+                #if len(cells)!=self.ncells_names_list or len(cells)<500:
+                #        self.build_list_names(cells)
+                #        self.ncells_names_list = len(cells)
+                #glCallList(self.dlist_names)
+                #for cell in cells: self.render_cell_name(cell, selection)
+                self.render_cell_names()
+
+        def render_cell_names(self):
+           # glDisable(GL_DEPTH_TEST)
+                glDisable(GL_LIGHTING)
+                for cell in self.sim.cellStates.values():
+                        l = cell.length
+                        p = cell.pos
+                        r = cell.radius
                 
                         cid = cell.id
                         glPushName(cid) 
@@ -90,29 +231,97 @@ class GLSphereRenderer:
         def render_cell(self, cell, selection):
                 r = cell.radius
                 p = cell.pos
+                d = cell.dir
+                nd = cell.avg_neighbour_dir
                 cid = cell.id
+                linecol = [0,0,0]
                 if selection==cid:
                         cellcol = [1,0,0]
                 else:
                         cellcol = cell.color
 
-                glColor3fv(cellcol)
+                glColor3fv(linecol)
+                glEnable(GL_BLEND)
+                glBlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA)
+                glEnable(GL_LINE_SMOOTH)
+
+                glLineWidth(1.0)
+                # draw wireframe for back facing polygons and cull front-facing ones
+                glPolygonMode(GL_BACK, GL_FILL)
+                glEnable(GL_CULL_FACE)
+                glCullFace(GL_FRONT)
+                glDepthFunc(GL_LEQUAL)
 
                 glMatrixMode(GL_MODELVIEW)
                 glPushMatrix()
-                glTranslatef(p[0],p[1],p[2])
-                gluSphere(self.quad, r, 8, 8)
+                glTranslatef(p[0],p[1],p[2])                
+                gluSphere(self.quad, r, 16, 16)
                 glPopMatrix() 
 
-        def render_cells(self, selection=None):
-        
-                # PLACEHOLDER
-        
+                glDepthFunc(GL_LESS)
+                glDisable(GL_CULL_FACE)
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+                glDisable(GL_LINE_SMOOTH)
+                glDisable(GL_BLEND)
+
+                glColor3fv(cellcol)
+                glMatrixMode(GL_MODELVIEW)
+                glPushMatrix()
+                glTranslatef(p[0],p[1],p[2])
+                glScalef(0.8,0.8,0.8)
+                gluSphere(self.quad, r, 16, 16)
+                #glScalef(1.25,1.0,1.0)
+                glPopMatrix() 
+
+                # Draw cell direction and average neighbour pos direction vector
                 #glDisable(GL_DEPTH_TEST)
+                glLineWidth(4)
+                glBegin(GL_LINES)
+                if self.draw_axis:
+                    glColor3f(1,1,1)
+                    glVertex3f(p[0], p[1], p[2])
+                    glVertex3f(p[0] + 2*d[0], p[1] + 2*d[1], p[2] + 2*d[2])
+                if self.draw_nbr_dir:
+                    glColor3f(0,1,0)
+                    glVertex3f(p[0], p[1], p[2])
+                    glVertex3f(p[0] + -2*nd[0], p[1] + -2*nd[1], p[2] + -2*nd[2])
+                if self.draw_gradient:
+                    grad = cell.gradient
+                    glColor3f(1,0,0)
+                    for g in grad:
+                        norm = numpy.sqrt(g[0]**2 + g[1]**2 + g[2]**2)
+                        cell.norm_grad = [g[0]/norm, g[1]/norm, g[2]/norm]
+                        if norm>0:
+                            glVertex3f(p[0], p[1], p[2])
+                            glVertex3f(p[0] + 2*g[0]/norm, p[1] + 2*g[1]/norm, p[2] + 2*g[2]/norm)
+
+                glEnd()
+                #glEnable(GL_DEPTH_TEST)
+
+
+        def render_cells(self, selection=None):
                 glDisable(GL_LIGHTING)
+                glMatrixMode(GL_MODELVIEW)
+
+                '''
+                glLight(GL_LIGHT0, GL_POSITION,  (500, 500, 500, 0)) # point light from the left, top, front
+                glLightfv(GL_LIGHT0, GL_AMBIENT, (0, 0, 0, 1))
+                glLightfv(GL_LIGHT0, GL_DIFFUSE, (0, 0, 0, 1))
+                #glLightfv(GL_LIGHT0, GL_SPECULAR, (1, 1, 1, 1))
+
+                glEnable(GL_LIGHT0)
+                glEnable(GL_COLOR_MATERIAL)
+                glColorMaterial(GL_FRONT, GL_SPECULAR )
+                glColor3f(1,1,1)
+                '''
                 cells = self.sim.cellStates.values()
                 for cell in cells:
                         self.render_cell(cell, selection)
+                '''
+                glDisable(GL_LIGHT0)
+                glDisable(GL_LIGHTING)
+                glDisable(GL_COLOR_MATERIAL)
+                '''
 
 class GLGridRenderer:
     def __init__(self, sig, integ, rng=None, alpha=1.):
@@ -157,9 +366,14 @@ class GLGridRenderer:
             scale = 1
         self.imageData = (self.imageData - mn)*scale
         #print "Signal grid range = %f to %f"%(mn,mx) 
-        for s in range(self.sig.nSignals):
-            self.byteImageData[0:self.dim[0],0:self.dim[1],s] = self.imageData[s,:,:].astype(numpy.uint8)
-
+        #for s in range(self.sig.nSignals):
+        #    self.byteImageData[0:self.dim[0],0:self.dim[1],s] = self.imageData[s,:,:].astype(numpy.uint8)
+        R = 0 if self.sig.nSignals<1 else self.imageData[0,:,:] 
+        G = 0 if self.sig.nSignals<2 else self.imageData[1,:,:] 
+        B = 0 if self.sig.nSignals<3 else self.imageData[2,:,:] 
+        self.byteImageData[0:self.dim[0], 0:self.dim[1], 0] = (255 - G - B)
+        self.byteImageData[0:self.dim[0], 0:self.dim[1], 1] = (255 - R - B)
+        self.byteImageData[0:self.dim[0], 0:self.dim[1], 2] = (255 - R - G)
       
         glEnable(GL_TEXTURE_2D)
         glDisable(GL_LIGHTING)

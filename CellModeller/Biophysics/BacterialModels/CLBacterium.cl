@@ -101,6 +101,7 @@ float4 quat_rot(float4 q, float4 v) {
 //  axis -- axis about which to rotate
 //  angle -- amount to rotate (radians)
 //  v -- the vector to rotate
+
 float4 rot(float4 axis, float angle, float4 v) {
   float4 q = axis*sin(angle/2.f);
   q.w = cos(angle/2.f);
@@ -132,8 +133,6 @@ void cyl_inertia_tensor(float muA, float l, float4 axis, float4 res[]) {
   float4 z_axis = {0.f, 0.f, 1.f, 0.f};
   float rot_ang = acos(dot(x_axis, axis));
 
-  float4 empty = {0.f, 0.f, 0.f, 0.f};
-
   float4 y_prime = y_axis;
   float4 z_prime = z_axis;
 
@@ -146,16 +145,12 @@ void cyl_inertia_tensor(float muA, float l, float4 axis, float4 res[]) {
   M[0] = axis;
   M[1] = y_prime;
   M[2] = z_prime;
-  M[3] = empty;
+  M[3] = 0.f;
 
   float4 MT[4];
   transpose(M, MT);
 
   float4 I[4];
-  I[0] = empty;
-  I[1] = empty;
-  I[2] = empty;
-  I[3] = empty;
   I[0].s0 = 0.f;
   I[1].s1 = diag;
   I[2].s2 = diag;
