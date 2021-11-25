@@ -332,6 +332,7 @@ visualised.
         cs.cellType = cellType
         cs.cellAdh = cellAdh
         cs.idx = self.next_idx()
+        cs.pos = [pos[i] for i in range(3)]
         self.idToIdx[cid] = cs.idx
         self.idxToId[cs.idx] = cid
         self.cellStates[cid] = cs
@@ -340,21 +341,7 @@ visualised.
         self.reg.addCell(cs)
         if self.sig:
             self.sig.addCell(cs)
-        if dir[2] == 0:
-            polar_1 = numpy.pi / 2
-        else:
-            polar_1 = numpy.arctan(numpy.sqrt(dir[0]**2 + dir[1]**2)/dir[2])
-            if dir[2] < 0:
-                polar_1 += numpy.pi
-        polar_2 = numpy.arctan(dir[1] / dir[0])
-        if dir[0] > 0 and dir[1] < 0:
-            polar_2 += 2 * numpy.pi
-        elif dir[0] == 0:
-            polar_2 = numpy.pi / 2 * numpy.sign(dir[1])
-        elif dir[0] < 0:
-            polar_2 += numpy.pi
-
-        self.phys.addCell(*pos, polar_1, polar_2)
+        self.phys.addCell(*pos, *dir)
 
     #---
     # Some functions to modify existing cells (e.g. from GUI)
@@ -367,6 +354,7 @@ visualised.
     ## Proceed to the next simulation step
     # This method is where objects phys, reg, sig and integ are called
     def step(self):
+        self.updateCellState()
         start = time.time()
         self.reg.step(self.dt)
         states = dict(self.cellStates)
@@ -385,7 +373,7 @@ visualised.
             self.writePickle()
 
         self.stepNum += 1
-        self.updateCellState()
+        
         end = time.time()
         #print('sim step took %g'%(end-start))
         return True
@@ -396,11 +384,11 @@ visualised.
         for state in list(self.cellStates.values()):
             cid = state.id
             i = state.idx
-
             state.vel = [self.phys.cell_centers[3*i+j]-state.pos[j] for j in range(3)]
             state.pos = [self.phys.cell_centers[3*i+j] for j in range(3)]
-            state.dir = [self.phys.cell_polarization[3*i+j] for j in range(3)]
+            state.dir = [self.phys.cell_directions[3*i+j] for j in range(3)]
             state.radius = self.phys.radius
+            state.length = self.phys.radius
 
     ## Import cells to the simulator from csv file. The file contains a list of 7-coordinates {pos,dir,len} (comma delimited) of each cell - also, there should be no cells around - ie run this from an empty model instead of addcell
     def importCells_file(self, filename):
@@ -417,6 +405,7 @@ visualised.
     ## Write current simulation state to an output file
     def writePickle(self, csv=False):
         filename = os.path.join(self.outputDirPath, 'step-%05i.pickle' % self.stepNum)
+        print(filename)
         outfile = open(filename, 'wb')
         data = {}
         data['cellStates'] = self.cellStates

@@ -7,6 +7,16 @@
 #include "SPP.h"
 
 
+std::tuple<float, float, float> normalize(float x, float y, float z){
+  float normalize = pow(x, 2) + pow(y, 2) + pow(z, 2);
+  normalize = sqrt(normalize);
+  x = x/normalize;
+  y = y/normalize;
+  z = z/normalize;
+  return std::make_tuple(x, y, z);
+}
+
+
 SPP::SPP(float dt_c, float gamma_c, float gamma_s_c, float radius_c, float W_s_c, float W_c_c, float f_pol_c, float D_r_c, float F_m_c, bool z_axis_c){
   this->dt = dt_c;
   this->gamma = gamma_c;
@@ -25,38 +35,36 @@ SPP::SPP(float dt_c, float gamma_c, float gamma_s_c, float radius_c, float W_s_c
   this->normal = std::normal_distribution<float>(0.0,1.0);
 }
 
-void SPP::addCell(float pos_x, float pos_y, float pos_z, float polar_1, float polar_2){
+void SPP::addCell(float pos_x, float pos_y, float pos_z, float dir_1, float dir_2, float dir_3){
   this->cell_centers.push_back(pos_x);
   this->cell_centers.push_back(pos_y);
   this->cell_centers.push_back(pos_z);
-  this->cell_polarization.push_back(polar_1);
-  this->cell_polarization.push_back(polar_2);
+  this->cell_directions.push_back(dir_1);
+  this->cell_directions.push_back(dir_2);
+  this->cell_directions.push_back(dir_3);
 }
 
 void SPP::step(){
   // find contacting pairs
   std::vector<std::tuple<int, int, float>> contacts = this->find_contacts();
   this->move_cells(contacts);
-  // get new polarizations
+  // get new directions
   this->repolarize();
 }
 
 std::vector<std::tuple<int, int, float>> SPP::find_contacts(){
   // using brute force, could be optimized
-  int cant_cells = this->cell_polarization.size()/2;
+  int cant_cells = this->cell_directions.size()/3;
   std::vector<std::tuple<int, int, float>> contacts;
   float distance;
   for (int i=0; i<cant_cells; i++){
     for (int j=i+1; j<cant_cells; j++){
-      printf("checking contacts\n");
       distance = 0;
       distance += pow((this->cell_centers[3*i]-this->cell_centers[3*j]), 2);
       distance += pow((this->cell_centers[3*i+1]-this->cell_centers[3*j+1]), 2);
       if (this->z_axis){distance += pow((this->cell_centers[3*i+2]-this->cell_centers[3*j+2]), 2);}
       distance = sqrt(distance);
-      printf("The distance is %f\n", distance);
       if (distance <= 2*this->radius){
-        printf("collision!\n");
         contacts.push_back(std::make_tuple(i, j, distance));
       }
     }
@@ -66,7 +74,7 @@ std::vector<std::tuple<int, int, float>> SPP::find_contacts(){
 
 void SPP::move_cells(std::vector<std::tuple<int, int, float>> contacts){
   // get forces for each cell (eq 1, 2, 3)
-  int cant_cells = this->cell_polarization.size()/2;
+  int cant_cells = this->cell_directions.size()/3;
   int cant_contacts = contacts.size();
   int a, b, c;
   float force = 0;
@@ -74,15 +82,9 @@ void SPP::move_cells(std::vector<std::tuple<int, int, float>> contacts){
   std::tuple<float, float, float> normal;
   for (int i=0; i<cant_cells; i++){
     normal = std::make_tuple(0, 0, 0);
-    // calculate p_i, where cell_polarization[2*i] is the angle w.r.t the x axis in the xy plane
-    // and cell_polarization[2*i+1] is the angle w.r.t the z axis (angles in radians)
-    std::get<0>(normal) = this->F_m * cos(this->cell_polarization[2*i]);
-    std::get<1>(normal) = this->F_m * sin(this->cell_polarization[2*i]);
-    if (this->z_axis){
-      std::get<0>(normal) *= sin(this->cell_polarization[2*i+1]);
-      std::get<1>(normal) *= sin(this->cell_polarization[2*i+1]);
-      std::get<2>(normal) = this->F_m * cos(this->cell_polarization[2*i+1]);
-    }
+    std::get<0>(normal) = this->F_m * this->cell_directions[3*i];
+    std::get<1>(normal) = this->F_m * this->cell_directions[3*i+1];
+    std::get<2>(normal) = this->F_m * this->cell_directions[3*i+2];
     
     // contacts
     for (int j=0; j<cant_contacts; j++){
@@ -95,9 +97,9 @@ void SPP::move_cells(std::vector<std::tuple<int, int, float>> contacts){
         contact_force = std::get<2>(contacts[j]) - this->radius;
         contact_force *= (this->W_s + this->W_c) / this->radius;
         contact_force = 2 / this->radius * (this->W_s - contact_force);
-        std::get<0>(normal) -= contact_force * (this->cell_centers[3*a]-this->cell_centers[3*b]) / std::get<2>(contacts[j]);
-        std::get<1>(normal) -= contact_force * (this->cell_centers[3*a+1]-this->cell_centers[3*b+1]) / std::get<2>(contacts[j]);
-        std::get<2>(normal) -= contact_force * (this->cell_centers[3*a+2]-this->cell_centers[3*b+2]) / std::get<2>(contacts[j]);
+        std::get<0>(normal) -= contact_force * (this->cell_centers[3*b]-this->cell_centers[3*a]) / std::get<2>(contacts[j]);
+        std::get<1>(normal) -= contact_force * (this->cell_centers[3*b+1]-this->cell_centers[3*a+1]) / std::get<2>(contacts[j]);
+        std::get<2>(normal) -= contact_force * (this->cell_centers[3*b+2]-this->cell_centers[3*a+2]) / std::get<2>(contacts[j]);
         // velocities * gamma
         // std::get<0>(normal) += this->gamma * (this->cell_velocities[3*a]-this->cell_velocities[3*b]);
         // std::get<1>(normal) += this->gamma * (this->cell_velocities[3*a+1]-this->cell_velocities[3*b+1]);
@@ -118,28 +120,37 @@ void SPP::move_cells(std::vector<std::tuple<int, int, float>> contacts){
 
 
 void SPP::repolarize(){
-  // assumes there´s no desired polarization
-  int cant_cells = this->cell_polarization.size();
+  // assumes there´s no desired direction
+  int cant_cells = this->cell_directions.size()/3;
 
   // add noise
   std::vector<float> noise;
-  for (int i=0; i<cant_cells; i++){
+  for (int i=0; i<3*cant_cells; i++){
     noise.push_back(this->normal(this->generator));
   }
-  // update polarization
+  // update direction
   float delta_i;
   float C = sqrt(2 * this->D_r);
-  for (int i=0; i<cant_cells/2; i++){
-    delta_i = -this->f_pol * (this->cell_polarization[2*i]);
-    delta_i += C * noise[2*i];
-    this->cell_polarization[2*i] += delta_i;
-  }
-  if (z_axis){
-    for (int i=0; i<cant_cells; i++){
-      delta_i = -this->f_pol * (this->cell_polarization[2*i+1]);
-      delta_i += C * noise[2*i+1];
-      this->cell_polarization[2*i+1] += delta_i;
-    }
+  float x, y, z;
+  std::tuple<float, float, float> abc;
+  for (int i=0; i<cant_cells; i++){
+    x = this->cell_directions[3*i];
+    y = this->cell_directions[3*i + 1]; 
+    if (this->z_axis){z = this->cell_directions[3*i+2];}else {z=0;}
+    abc = normalize(x, y, z);
+    delta_i = -this->f_pol * (this->cell_directions[3*i]);
+    delta_i += C * std::get<0>(abc);
+    this->cell_directions[3*i] += delta_i;
+    delta_i = -this->f_pol * (this->cell_directions[3*i+1]);
+    delta_i += C * std::get<1>(abc);
+    this->cell_directions[3*i+1] += delta_i;
+    delta_i = -this->f_pol * (this->cell_directions[3*i+2]);
+    delta_i += C * std::get<2>(abc);
+    this->cell_directions[3*i+2] += delta_i;
+    abc = normalize(this->cell_directions[3*i], this->cell_directions[3*i+1], this->cell_directions[3*i+2]);
+    this->cell_directions[3*i] += std::get<0>(abc);
+    this->cell_directions[3*i+1] += std::get<1>(abc);
+    this->cell_directions[3*i+2] += std::get<2>(abc);
   }
 
 }

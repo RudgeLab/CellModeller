@@ -10,7 +10,7 @@ outfile = 'all.csv'
 def setup(sim):
     sim.dt = 0.025
     # Set biophysics, signalling, and regulation models
-    biophys = SPP(z_axis_c=False, gamma_c=100)
+    biophys = SPP(z_axis_c=False, dt_c=0.01, )
 
     # use this file for reg too
     regul = ModuleRegulator(sim, sim.moduleName)
@@ -18,8 +18,9 @@ def setup(sim):
     sim.init(biophys, regul, None, None)
  
     # Specify the initial cell and its location in the simulation
-    sim.addCell(cellType=0, pos=(-2,0,0), dir=(1,0,0))
-    sim.addCell(cellType=1, pos=(2,0,0), dir=(1,0,0))
+    a = 1 / numpy.sqrt(2)
+    sim.addCell(cellType=0, pos=(-3,0,0), dir=(a, a, 0))
+    sim.addCell(cellType=1, pos=(3,0,0), dir=(-a, a, 0))
 
     # Add some objects to draw the models
     #if sim.is_gui:
@@ -29,8 +30,8 @@ def setup(sim):
     #else:
     #    print("Running in batch mode: no display will be output")
 
-    sim.pickleSteps = 100
-    #sim.saveOutput = True
+    sim.pickleSteps = 10
+    sim.saveOutput = True
 
 def init(cell):
     # Specify mean and distribution of initial cell size
@@ -39,6 +40,11 @@ def init(cell):
     cell.growthRate = 1. 
     cell.color = cell_cols[cell.cellType]
 
+def update(cells):
+    pass
+
+def divide(parent, d1, d2):
+    pass
 # def update(cells):
 #     #Iterate through each cell and flag cells that reach target size for division
 #     for (id, cell) in cells.items():

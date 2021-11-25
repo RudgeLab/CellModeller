@@ -161,6 +161,10 @@ SwigPyIterator_swigregister = _SPP.SwigPyIterator_swigregister
 SwigPyIterator_swigregister(SwigPyIterator)
 
 PI = _SPP.PI
+
+def normalize(x, y, z=0):
+    return _SPP.normalize(x, y, z)
+normalize = _SPP.normalize
 class SPP(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, SPP, name, value)
@@ -171,10 +175,10 @@ class SPP(_object):
     __swig_getmethods__["cell_centers"] = _SPP.SPP_cell_centers_get
     if _newclass:
         cell_centers = _swig_property(_SPP.SPP_cell_centers_get, _SPP.SPP_cell_centers_set)
-    __swig_setmethods__["cell_polarization"] = _SPP.SPP_cell_polarization_set
-    __swig_getmethods__["cell_polarization"] = _SPP.SPP_cell_polarization_get
+    __swig_setmethods__["cell_directions"] = _SPP.SPP_cell_directions_set
+    __swig_getmethods__["cell_directions"] = _SPP.SPP_cell_directions_get
     if _newclass:
-        cell_polarization = _swig_property(_SPP.SPP_cell_polarization_get, _SPP.SPP_cell_polarization_set)
+        cell_directions = _swig_property(_SPP.SPP_cell_directions_get, _SPP.SPP_cell_directions_set)
     __swig_setmethods__["dt"] = _SPP.SPP_dt_set
     __swig_getmethods__["dt"] = _SPP.SPP_dt_get
     if _newclass:
@@ -184,15 +188,15 @@ class SPP(_object):
     if _newclass:
         radius = _swig_property(_SPP.SPP_radius_get, _SPP.SPP_radius_set)
 
-    def __init__(self, dt_c=0.01, gamma_c=1, gamma_s_c=1, radius_c=1, W_s_c=1, W_c_c=1, f_pol_c=1, D_r_c=1, F_m_c=1, z_axis_c=True):
+    def __init__(self, dt_c=0.01, gamma_c=1, gamma_s_c=1, radius_c=1, W_s_c=1, W_c_c=0, f_pol_c=1, D_r_c=1, F_m_c=1, z_axis_c=True):
         this = _SPP.new_SPP(dt_c, gamma_c, gamma_s_c, radius_c, W_s_c, W_c_c, f_pol_c, D_r_c, F_m_c, z_axis_c)
         try:
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
 
-    def addCell(self, pos_x=0, pos_y=0, pos_z=0, polar_1=0, polar_2=3.1415):
-        return _SPP.SPP_addCell(self, pos_x, pos_y, pos_z, polar_1, polar_2)
+    def addCell(self, pos_x=0, pos_y=0, pos_z=0, dir_1=0, dir_2=0, dir_3=3.1415):
+        return _SPP.SPP_addCell(self, pos_x, pos_y, pos_z, dir_1, dir_2, dir_3)
 
     def step(self):
         return _SPP.SPP_step(self)
