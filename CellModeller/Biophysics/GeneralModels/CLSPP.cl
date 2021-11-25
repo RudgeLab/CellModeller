@@ -301,7 +301,10 @@ __kernel void find_contacts(const int max_cells,
                             __global float* reldists,
                             __global float* stiff,
                             __global float* overlap,
-			    __global float4* avg_neighbour_dir)
+			    __global float4* avg_neighbour_dir,
+              const int changing_wc,
+          const float sphere_radius,
+          const float mu)
 {
   // our id
   int i = get_global_id(0);
@@ -361,7 +364,22 @@ __kernel void find_contacts(const int max_cells,
 	// This is the model from Smeets et al. (2016)
 	float dij = length(centers[i]-centers[j]);
 	const float R = 1.f;
-	float dist_adh = -(2.f/R) * ( Ws - (Ws + Wc) * (dij - R) / R );
+	  float4 center_i = centers[i];
+  const float4 org_center = {sphere_radius, 0.f, 0.f, 0.f};
+  float4 org_center_dir = normalize(org_center - center_i);
+  if (changing_wc == 0)
+  {float dist_adh = -(2.f/R) * ( Ws - (Ws + Wc) * (dij - R) / R );}
+  else
+  {float x1 = abs(centers[i].s0 - org_center.s0);
+    float x = -(2.f/R) * ( Ws - (Ws + exp(-(sqrt(pow(centers[i].s0 - org_center.s0,2))*mu)) * (dij - R) / R );
+  float y = -(2.f/R) * ( Ws - (Ws + exp(-(sqrt(pow(centers[i].s1 - org_center.s1,2))*mu)) * (dij - R) / R );
+  float z = -(2.f/R) * ( Ws - (Ws + exp(-(sqrt(pow(centers[i].s2 - org_center.s2,2))*mu)) * (dij - R) / R );
+  float4 dist_adh_vec;
+  dist_adh_vec.s0 = x;
+  dist_adh_vec.s1 = y;
+  dist_adh_vec.s2 = z;
+  dist_adh_vec.s3 = 0.f;
+  float dist_adh = sqrt(pow(dist_adh_vec.s0, 2)+ pow(dist_adh_vec.s1, 2) + pow(dist_adh_vec.s2, 2));}
 	float4 pt = 0.5f * (centers[i]+centers[j]);
 	float4 norm = normalize(centers[j]-centers[i]);
 

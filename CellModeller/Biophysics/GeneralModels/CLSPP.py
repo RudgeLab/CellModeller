@@ -52,7 +52,9 @@ class CLSPP:
                  sphere_radius=50,
                  steering_along_grad=True,
                  vel_change=True,
-                 slowing_source=True):
+                 slowing_source=True,
+                 changing_wc=True,
+                 mu=1):
 
         # Is the simulation on a sphere?
         self.spherical = spherical
@@ -65,6 +67,8 @@ class CLSPP:
         #velocity change depending on distance from source
         self.slowing_source = slowing_source
         #velocity decreases when cells are close to source 
+        self.changing_wc = changing_wc
+        #changing adhesion, depending on distance from source
 
         # Should we compute neighbours? (bit slow)
         self.computeNeighbours = compNeighbours
@@ -98,6 +102,7 @@ class CLSPP:
         self.D = D
         self.dt = dt
         self.cgs_tol = cgs_tol
+        self.mu = mu
         
 
         self.max_substeps = max_substeps
@@ -820,7 +825,10 @@ class CLSPP:
                                    self.ct_reldists_dev.data,
                                    self.ct_stiff_dev.data,
                                    self.ct_overlap_dev.data,
-                                   self.avg_neighbour_dir_dev.data).wait()
+                                   self.avg_neighbour_dir_dev.data,
+                                   numpy.int32(self.changing_wc*1),
+                                    numpy.float32(self.sphere_radius),
+                                   numpy.float32(self.mu)).wait()
 
         # set dtype to int32 so we don't overflow the int32 when summing
         #self.n_cts = self.cell_n_cts_dev.get().sum(dtype=numpy.int32)
@@ -853,7 +861,10 @@ class CLSPP:
                                  self.ct_frs_dev.data,
                                  self.ct_tos_dev.data,
                                  self.cell_tos_dev.data,
-                                 self.n_cell_tos_dev.data).wait()
+                                 self.n_cell_tos_dev.data,
+                                numpy.int32(self.changing_wc*1),
+                                numpy.float32(self.sphere_radius),
+                                numpy.float32(self.mu)).wait()
 
 
     def build_matrix(self):
