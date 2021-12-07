@@ -160,11 +160,253 @@ class SwigPyIterator(_object):
 SwigPyIterator_swigregister = _SPP.SwigPyIterator_swigregister
 SwigPyIterator_swigregister(SwigPyIterator)
 
+class VecFloat(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, VecFloat, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, VecFloat, name)
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _SPP.VecFloat_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _SPP.VecFloat___nonzero__(self)
+
+    def __bool__(self):
+        return _SPP.VecFloat___bool__(self)
+
+    def __len__(self):
+        return _SPP.VecFloat___len__(self)
+
+    def __getslice__(self, i, j):
+        return _SPP.VecFloat___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _SPP.VecFloat___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _SPP.VecFloat___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _SPP.VecFloat___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _SPP.VecFloat___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _SPP.VecFloat___setitem__(self, *args)
+
+    def pop(self):
+        return _SPP.VecFloat_pop(self)
+
+    def append(self, x):
+        return _SPP.VecFloat_append(self, x)
+
+    def empty(self):
+        return _SPP.VecFloat_empty(self)
+
+    def size(self):
+        return _SPP.VecFloat_size(self)
+
+    def swap(self, v):
+        return _SPP.VecFloat_swap(self, v)
+
+    def begin(self):
+        return _SPP.VecFloat_begin(self)
+
+    def end(self):
+        return _SPP.VecFloat_end(self)
+
+    def rbegin(self):
+        return _SPP.VecFloat_rbegin(self)
+
+    def rend(self):
+        return _SPP.VecFloat_rend(self)
+
+    def clear(self):
+        return _SPP.VecFloat_clear(self)
+
+    def get_allocator(self):
+        return _SPP.VecFloat_get_allocator(self)
+
+    def pop_back(self):
+        return _SPP.VecFloat_pop_back(self)
+
+    def erase(self, *args):
+        return _SPP.VecFloat_erase(self, *args)
+
+    def __init__(self, *args):
+        this = _SPP.new_VecFloat(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+    def push_back(self, x):
+        return _SPP.VecFloat_push_back(self, x)
+
+    def front(self):
+        return _SPP.VecFloat_front(self)
+
+    def back(self):
+        return _SPP.VecFloat_back(self)
+
+    def assign(self, n, x):
+        return _SPP.VecFloat_assign(self, n, x)
+
+    def resize(self, *args):
+        return _SPP.VecFloat_resize(self, *args)
+
+    def insert(self, *args):
+        return _SPP.VecFloat_insert(self, *args)
+
+    def reserve(self, n):
+        return _SPP.VecFloat_reserve(self, n)
+
+    def capacity(self):
+        return _SPP.VecFloat_capacity(self)
+    __swig_destroy__ = _SPP.delete_VecFloat
+    __del__ = lambda self: None
+VecFloat_swigregister = _SPP.VecFloat_swigregister
+VecFloat_swigregister(VecFloat)
+
+class VecVecFloat(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, VecVecFloat, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, VecVecFloat, name)
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _SPP.VecVecFloat_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _SPP.VecVecFloat___nonzero__(self)
+
+    def __bool__(self):
+        return _SPP.VecVecFloat___bool__(self)
+
+    def __len__(self):
+        return _SPP.VecVecFloat___len__(self)
+
+    def __getslice__(self, i, j):
+        return _SPP.VecVecFloat___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _SPP.VecVecFloat___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _SPP.VecVecFloat___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _SPP.VecVecFloat___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _SPP.VecVecFloat___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _SPP.VecVecFloat___setitem__(self, *args)
+
+    def pop(self):
+        return _SPP.VecVecFloat_pop(self)
+
+    def append(self, x):
+        return _SPP.VecVecFloat_append(self, x)
+
+    def empty(self):
+        return _SPP.VecVecFloat_empty(self)
+
+    def size(self):
+        return _SPP.VecVecFloat_size(self)
+
+    def swap(self, v):
+        return _SPP.VecVecFloat_swap(self, v)
+
+    def begin(self):
+        return _SPP.VecVecFloat_begin(self)
+
+    def end(self):
+        return _SPP.VecVecFloat_end(self)
+
+    def rbegin(self):
+        return _SPP.VecVecFloat_rbegin(self)
+
+    def rend(self):
+        return _SPP.VecVecFloat_rend(self)
+
+    def clear(self):
+        return _SPP.VecVecFloat_clear(self)
+
+    def get_allocator(self):
+        return _SPP.VecVecFloat_get_allocator(self)
+
+    def pop_back(self):
+        return _SPP.VecVecFloat_pop_back(self)
+
+    def erase(self, *args):
+        return _SPP.VecVecFloat_erase(self, *args)
+
+    def __init__(self, *args):
+        this = _SPP.new_VecVecFloat(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+    def push_back(self, x):
+        return _SPP.VecVecFloat_push_back(self, x)
+
+    def front(self):
+        return _SPP.VecVecFloat_front(self)
+
+    def back(self):
+        return _SPP.VecVecFloat_back(self)
+
+    def assign(self, n, x):
+        return _SPP.VecVecFloat_assign(self, n, x)
+
+    def resize(self, *args):
+        return _SPP.VecVecFloat_resize(self, *args)
+
+    def insert(self, *args):
+        return _SPP.VecVecFloat_insert(self, *args)
+
+    def reserve(self, n):
+        return _SPP.VecVecFloat_reserve(self, n)
+
+    def capacity(self):
+        return _SPP.VecVecFloat_capacity(self)
+    __swig_destroy__ = _SPP.delete_VecVecFloat
+    __del__ = lambda self: None
+VecVecFloat_swigregister = _SPP.VecVecFloat_swigregister
+VecVecFloat_swigregister(VecVecFloat)
+
 PI = _SPP.PI
 
-def normalize(x, y, z=0):
+def normalize(x, y, z):
     return _SPP.normalize(x, y, z)
 normalize = _SPP.normalize
+
+def to_spherical(dir):
+    return _SPP.to_spherical(dir)
+to_spherical = _SPP.to_spherical
+
+def to_polar(dir):
+    return _SPP.to_polar(dir)
+to_polar = _SPP.to_polar
+
+def to_2Dcartesian(theta):
+    return _SPP.to_2Dcartesian(theta)
+to_2Dcartesian = _SPP.to_2Dcartesian
+
+def to_3Dcartesian(theta, phi):
+    return _SPP.to_3Dcartesian(theta, phi)
+to_3Dcartesian = _SPP.to_3Dcartesian
 class SPP(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, SPP, name, value)
@@ -188,14 +430,14 @@ class SPP(_object):
     if _newclass:
         radius = _swig_property(_SPP.SPP_radius_get, _SPP.SPP_radius_set)
 
-    def __init__(self, dt_c=0.01, gamma_c=1, gamma_s_c=1, radius_c=1, W_s_c=1, W_c_c=0, f_pol_c=1, D_r_c=1, F_m_c=1, z_axis_c=True):
+    def __init__(self, dt_c=0.01, gamma_c=1, gamma_s_c=1, radius_c=1, W_s_c=1, W_c_c=1, f_pol_c=1, D_r_c=0.001, F_m_c=1, z_axis_c=True):
         this = _SPP.new_SPP(dt_c, gamma_c, gamma_s_c, radius_c, W_s_c, W_c_c, f_pol_c, D_r_c, F_m_c, z_axis_c)
         try:
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
 
-    def addCell(self, pos_x=0, pos_y=0, pos_z=0, dir_1=0, dir_2=0, dir_3=3.1415):
+    def addCell(self, pos_x=0, pos_y=0, pos_z=0, dir_1=0, dir_2=0, dir_3=0):
         return _SPP.SPP_addCell(self, pos_x, pos_y, pos_z, dir_1, dir_2, dir_3)
 
     def step(self):
@@ -213,119 +455,6 @@ class SPP(_object):
     __del__ = lambda self: None
 SPP_swigregister = _SPP.SPP_swigregister
 SPP_swigregister(SPP)
-
-class floatVector(_object):
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, floatVector, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, floatVector, name)
-    __repr__ = _swig_repr
-
-    def iterator(self):
-        return _SPP.floatVector_iterator(self)
-    def __iter__(self):
-        return self.iterator()
-
-    def __nonzero__(self):
-        return _SPP.floatVector___nonzero__(self)
-
-    def __bool__(self):
-        return _SPP.floatVector___bool__(self)
-
-    def __len__(self):
-        return _SPP.floatVector___len__(self)
-
-    def __getslice__(self, i, j):
-        return _SPP.floatVector___getslice__(self, i, j)
-
-    def __setslice__(self, *args):
-        return _SPP.floatVector___setslice__(self, *args)
-
-    def __delslice__(self, i, j):
-        return _SPP.floatVector___delslice__(self, i, j)
-
-    def __delitem__(self, *args):
-        return _SPP.floatVector___delitem__(self, *args)
-
-    def __getitem__(self, *args):
-        return _SPP.floatVector___getitem__(self, *args)
-
-    def __setitem__(self, *args):
-        return _SPP.floatVector___setitem__(self, *args)
-
-    def pop(self):
-        return _SPP.floatVector_pop(self)
-
-    def append(self, x):
-        return _SPP.floatVector_append(self, x)
-
-    def empty(self):
-        return _SPP.floatVector_empty(self)
-
-    def size(self):
-        return _SPP.floatVector_size(self)
-
-    def swap(self, v):
-        return _SPP.floatVector_swap(self, v)
-
-    def begin(self):
-        return _SPP.floatVector_begin(self)
-
-    def end(self):
-        return _SPP.floatVector_end(self)
-
-    def rbegin(self):
-        return _SPP.floatVector_rbegin(self)
-
-    def rend(self):
-        return _SPP.floatVector_rend(self)
-
-    def clear(self):
-        return _SPP.floatVector_clear(self)
-
-    def get_allocator(self):
-        return _SPP.floatVector_get_allocator(self)
-
-    def pop_back(self):
-        return _SPP.floatVector_pop_back(self)
-
-    def erase(self, *args):
-        return _SPP.floatVector_erase(self, *args)
-
-    def __init__(self, *args):
-        this = _SPP.new_floatVector(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
-
-    def push_back(self, x):
-        return _SPP.floatVector_push_back(self, x)
-
-    def front(self):
-        return _SPP.floatVector_front(self)
-
-    def back(self):
-        return _SPP.floatVector_back(self)
-
-    def assign(self, n, x):
-        return _SPP.floatVector_assign(self, n, x)
-
-    def resize(self, *args):
-        return _SPP.floatVector_resize(self, *args)
-
-    def insert(self, *args):
-        return _SPP.floatVector_insert(self, *args)
-
-    def reserve(self, n):
-        return _SPP.floatVector_reserve(self, n)
-
-    def capacity(self):
-        return _SPP.floatVector_capacity(self)
-    __swig_destroy__ = _SPP.delete_floatVector
-    __del__ = lambda self: None
-floatVector_swigregister = _SPP.floatVector_swigregister
-floatVector_swigregister(floatVector)
 
 # This file is compatible with both classic and new-style classes.
 

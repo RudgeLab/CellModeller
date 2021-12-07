@@ -326,6 +326,7 @@ visualised.
 
     ## Add a new cell to the simulator
     def addCell(self, cellType=0, cellAdh=0, length=3.5, pos=(0, 0, 0), dir=(1, 0, 0), **kwargs):
+        print(dir)
         cid = self.next_id()
         cs = CellState(cid)
         cs.length = length
@@ -384,11 +385,11 @@ visualised.
         for state in list(self.cellStates.values()):
             cid = state.id
             i = state.idx
-            state.vel = [self.phys.cell_centers[3*i+j]-state.pos[j] for j in range(3)]
-            state.pos = [self.phys.cell_centers[3*i+j] for j in range(3)]
-            state.dir = [self.phys.cell_directions[3*i+j] for j in range(3)]
+            state.vel = [self.phys.cell_centers[i][j]-state.pos[j] for j in range(3)]
+            state.pos = [self.phys.cell_centers[i][j] for j in range(3)]
+            state.dir = [self.phys.cell_directions[i][j] for j in range(3)]
             state.radius = self.phys.radius
-            state.length = self.phys.radius
+            state.length = 0
 
     ## Import cells to the simulator from csv file. The file contains a list of 7-coordinates {pos,dir,len} (comma delimited) of each cell - also, there should be no cells around - ie run this from an empty model instead of addcell
     def importCells_file(self, filename):

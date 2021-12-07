@@ -10,7 +10,7 @@ outfile = 'all.csv'
 def setup(sim):
     sim.dt = 0.025
     # Set biophysics, signalling, and regulation models
-    biophys = SPP(z_axis_c=False, dt_c=0.01, )
+    biophys = SPP(z_axis_c=False, dt_c=0.01)
 
     # use this file for reg too
     regul = ModuleRegulator(sim, sim.moduleName)
