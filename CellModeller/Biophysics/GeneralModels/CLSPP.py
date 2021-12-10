@@ -861,10 +861,7 @@ class CLSPP:
                                  self.ct_frs_dev.data,
                                  self.ct_tos_dev.data,
                                  self.cell_tos_dev.data,
-                                 self.n_cell_tos_dev.data,
-                                numpy.int32(self.changing_wc*1),
-                                numpy.float32(self.sphere_radius),
-                                numpy.float32(self.mu)).wait()
+                                 self.n_cell_tos_dev.data).wait()
 
 
     def build_matrix(self):
