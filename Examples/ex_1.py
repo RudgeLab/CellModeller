@@ -21,6 +21,10 @@ def setup(sim):
     a = 1 / numpy.sqrt(2)
     sim.addCell(cellType=0, pos=(-3,0,0), dir=(a, a, 0))
     sim.addCell(cellType=1, pos=(3,0,0), dir=(-a, a, 0))
+    sim.addCell(cellType=1, pos=(3,3,0), dir=(-0.1, numpy.sqrt(1-0.1**2), 0))
+    sim.addCell(cellType=1, pos=(0,-3,0), dir=(0.1, numpy.sqrt(1-0.1**2), 0))
+    sim.addCell(cellType=1, pos=(0,3,0), dir=(-0.5, numpy.sqrt(3/4), 0))
+    biophys.addPlane(0, 5, 0, 0, -1, 0)
 
     # Add some objects to draw the models
     #if sim.is_gui:

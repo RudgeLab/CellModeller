@@ -392,6 +392,10 @@ def normalize(x, y, z):
     return _SPP.normalize(x, y, z)
 normalize = _SPP.normalize
 
+def point_plane_distance(point, plane_norm, plane_point):
+    return _SPP.point_plane_distance(point, plane_norm, plane_point)
+point_plane_distance = _SPP.point_plane_distance
+
 def to_spherical(dir):
     return _SPP.to_spherical(dir)
 to_spherical = _SPP.to_spherical
@@ -421,6 +425,14 @@ class SPP(_object):
     __swig_getmethods__["cell_directions"] = _SPP.SPP_cell_directions_get
     if _newclass:
         cell_directions = _swig_property(_SPP.SPP_cell_directions_get, _SPP.SPP_cell_directions_set)
+    __swig_setmethods__["plane_pts"] = _SPP.SPP_plane_pts_set
+    __swig_getmethods__["plane_pts"] = _SPP.SPP_plane_pts_get
+    if _newclass:
+        plane_pts = _swig_property(_SPP.SPP_plane_pts_get, _SPP.SPP_plane_pts_set)
+    __swig_setmethods__["plane_norms"] = _SPP.SPP_plane_norms_set
+    __swig_getmethods__["plane_norms"] = _SPP.SPP_plane_norms_get
+    if _newclass:
+        plane_norms = _swig_property(_SPP.SPP_plane_norms_get, _SPP.SPP_plane_norms_set)
     __swig_setmethods__["dt"] = _SPP.SPP_dt_set
     __swig_getmethods__["dt"] = _SPP.SPP_dt_get
     if _newclass:
@@ -440,14 +452,20 @@ class SPP(_object):
     def addCell(self, pos_x=0, pos_y=0, pos_z=0, dir_1=0, dir_2=0, dir_3=0):
         return _SPP.SPP_addCell(self, pos_x, pos_y, pos_z, dir_1, dir_2, dir_3)
 
+    def addPlane(self, p_x, p_y, p_z, n_x, n_y, n_z):
+        return _SPP.SPP_addPlane(self, p_x, p_y, p_z, n_x, n_y, n_z)
+
     def step(self):
         return _SPP.SPP_step(self)
 
-    def find_contacts(self):
-        return _SPP.SPP_find_contacts(self)
+    def find_cell_contacts(self):
+        return _SPP.SPP_find_cell_contacts(self)
 
-    def move_cells(self, contacts):
-        return _SPP.SPP_move_cells(self, contacts)
+    def find_plane_contacts(self):
+        return _SPP.SPP_find_plane_contacts(self)
+
+    def move_cells(self, cell_contacts, plane_contacts):
+        return _SPP.SPP_move_cells(self, cell_contacts, plane_contacts)
 
     def repolarize(self):
         return _SPP.SPP_repolarize(self)

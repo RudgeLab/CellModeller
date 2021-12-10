@@ -3018,12 +3018,13 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 #define SWIGTYPE_p_std__tupleT_float_float_float_t swig_types[9]
 #define SWIGTYPE_p_std__tupleT_float_float_t swig_types[10]
 #define SWIGTYPE_p_std__vectorT_float_std__allocatorT_float_t_t swig_types[11]
-#define SWIGTYPE_p_std__vectorT_std__tupleT_int_int_float_t_std__allocatorT_std__tupleT_int_int_float_t_t_t swig_types[12]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t swig_types[13]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[14]
-#define SWIGTYPE_p_value_type swig_types[15]
-static swig_type_info *swig_types[17];
-static swig_module_info swig_module = {swig_types, 16, 0, 0, 0, 0};
+#define SWIGTYPE_p_std__vectorT_std__tupleT_float_float_float_t_std__allocatorT_std__tupleT_float_float_float_t_t_t swig_types[12]
+#define SWIGTYPE_p_std__vectorT_std__tupleT_int_int_float_t_std__allocatorT_std__tupleT_int_int_float_t_t_t swig_types[13]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t swig_types[14]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[15]
+#define SWIGTYPE_p_value_type swig_types[16]
+static swig_type_info *swig_types[18];
+static swig_module_info swig_module = {swig_types, 17, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -9869,6 +9870,64 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_point_plane_distance(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< float,std::allocator< float > > arg1 ;
+  std::tuple< float,float,float > arg2 ;
+  std::tuple< float,float,float > arg3 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  void *argp3 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  float result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:point_plane_distance",&obj0,&obj1,&obj2)) SWIG_fail;
+  {
+    std::vector< float,std::allocator< float > > *ptr = (std::vector< float,std::allocator< float > > *)0;
+    int res = swig::asptr(obj0, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "point_plane_distance" "', argument " "1"" of type '" "std::vector< float,std::allocator< float > >""'"); 
+    }
+    arg1 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__tupleT_float_float_float_t,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "point_plane_distance" "', argument " "2"" of type '" "std::tuple< float,float,float >""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "point_plane_distance" "', argument " "2"" of type '" "std::tuple< float,float,float >""'");
+    } else {
+      std::tuple< float,float,float > * temp = reinterpret_cast< std::tuple< float,float,float > * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  {
+    res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_std__tupleT_float_float_float_t,  0  | 0);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "point_plane_distance" "', argument " "3"" of type '" "std::tuple< float,float,float >""'"); 
+    }  
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "point_plane_distance" "', argument " "3"" of type '" "std::tuple< float,float,float >""'");
+    } else {
+      std::tuple< float,float,float > * temp = reinterpret_cast< std::tuple< float,float,float > * >(argp3);
+      arg3 = *temp;
+      if (SWIG_IsNewObj(res3)) delete temp;
+    }
+  }
+  result = (float)point_plane_distance(arg1,arg2,arg3);
+  resultobj = SWIG_From_float(static_cast< float >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_to_spherical(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::vector< float,std::allocator< float > > arg1 ;
@@ -10082,6 +10141,110 @@ SWIGINTERN PyObject *_wrap_SPP_cell_directions_get(PyObject *SWIGUNUSEDPARM(self
   arg1 = reinterpret_cast< SPP * >(argp1);
   result = (std::vector< std::vector< float,std::allocator< float > >,std::allocator< std::vector< float,std::allocator< float > > > > *) & ((arg1)->cell_directions);
   resultobj = swig::from(static_cast< std::vector< std::vector< float,std::allocator< float > >,std::allocator< std::vector< float,std::allocator< float > > > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_SPP_plane_pts_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  SPP *arg1 = (SPP *) 0 ;
+  std::vector< std::tuple< float,float,float >,std::allocator< std::tuple< float,float,float > > > *arg2 = (std::vector< std::tuple< float,float,float >,std::allocator< std::tuple< float,float,float > > > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:SPP_plane_pts_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_SPP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SPP_plane_pts_set" "', argument " "1"" of type '" "SPP *""'"); 
+  }
+  arg1 = reinterpret_cast< SPP * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_std__vectorT_std__tupleT_float_float_float_t_std__allocatorT_std__tupleT_float_float_float_t_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "SPP_plane_pts_set" "', argument " "2"" of type '" "std::vector< std::tuple< float,float,float >,std::allocator< std::tuple< float,float,float > > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< std::tuple< float,float,float >,std::allocator< std::tuple< float,float,float > > > * >(argp2);
+  if (arg1) (arg1)->plane_pts = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_SPP_plane_pts_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  SPP *arg1 = (SPP *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< std::tuple< float,float,float >,std::allocator< std::tuple< float,float,float > > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:SPP_plane_pts_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_SPP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SPP_plane_pts_get" "', argument " "1"" of type '" "SPP *""'"); 
+  }
+  arg1 = reinterpret_cast< SPP * >(argp1);
+  result = (std::vector< std::tuple< float,float,float >,std::allocator< std::tuple< float,float,float > > > *)& ((arg1)->plane_pts);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__tupleT_float_float_float_t_std__allocatorT_std__tupleT_float_float_float_t_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_SPP_plane_norms_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  SPP *arg1 = (SPP *) 0 ;
+  std::vector< std::tuple< float,float,float >,std::allocator< std::tuple< float,float,float > > > *arg2 = (std::vector< std::tuple< float,float,float >,std::allocator< std::tuple< float,float,float > > > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:SPP_plane_norms_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_SPP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SPP_plane_norms_set" "', argument " "1"" of type '" "SPP *""'"); 
+  }
+  arg1 = reinterpret_cast< SPP * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_std__vectorT_std__tupleT_float_float_float_t_std__allocatorT_std__tupleT_float_float_float_t_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "SPP_plane_norms_set" "', argument " "2"" of type '" "std::vector< std::tuple< float,float,float >,std::allocator< std::tuple< float,float,float > > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< std::tuple< float,float,float >,std::allocator< std::tuple< float,float,float > > > * >(argp2);
+  if (arg1) (arg1)->plane_norms = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_SPP_plane_norms_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  SPP *arg1 = (SPP *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< std::tuple< float,float,float >,std::allocator< std::tuple< float,float,float > > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:SPP_plane_norms_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_SPP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SPP_plane_norms_get" "', argument " "1"" of type '" "SPP *""'"); 
+  }
+  arg1 = reinterpret_cast< SPP * >(argp1);
+  result = (std::vector< std::tuple< float,float,float >,std::allocator< std::tuple< float,float,float > > > *)& ((arg1)->plane_norms);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__tupleT_float_float_float_t_std__allocatorT_std__tupleT_float_float_float_t_t_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -11786,6 +11949,81 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_SPP_addPlane(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  SPP *arg1 = (SPP *) 0 ;
+  float arg2 ;
+  float arg3 ;
+  float arg4 ;
+  float arg5 ;
+  float arg6 ;
+  float arg7 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  float val2 ;
+  int ecode2 = 0 ;
+  float val3 ;
+  int ecode3 = 0 ;
+  float val4 ;
+  int ecode4 = 0 ;
+  float val5 ;
+  int ecode5 = 0 ;
+  float val6 ;
+  int ecode6 = 0 ;
+  float val7 ;
+  int ecode7 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
+  PyObject * obj6 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOO:SPP_addPlane",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_SPP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SPP_addPlane" "', argument " "1"" of type '" "SPP *""'"); 
+  }
+  arg1 = reinterpret_cast< SPP * >(argp1);
+  ecode2 = SWIG_AsVal_float(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SPP_addPlane" "', argument " "2"" of type '" "float""'");
+  } 
+  arg2 = static_cast< float >(val2);
+  ecode3 = SWIG_AsVal_float(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "SPP_addPlane" "', argument " "3"" of type '" "float""'");
+  } 
+  arg3 = static_cast< float >(val3);
+  ecode4 = SWIG_AsVal_float(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "SPP_addPlane" "', argument " "4"" of type '" "float""'");
+  } 
+  arg4 = static_cast< float >(val4);
+  ecode5 = SWIG_AsVal_float(obj4, &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "SPP_addPlane" "', argument " "5"" of type '" "float""'");
+  } 
+  arg5 = static_cast< float >(val5);
+  ecode6 = SWIG_AsVal_float(obj5, &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "SPP_addPlane" "', argument " "6"" of type '" "float""'");
+  } 
+  arg6 = static_cast< float >(val6);
+  ecode7 = SWIG_AsVal_float(obj6, &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "SPP_addPlane" "', argument " "7"" of type '" "float""'");
+  } 
+  arg7 = static_cast< float >(val7);
+  (arg1)->addPlane(arg2,arg3,arg4,arg5,arg6,arg7);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_SPP_step(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   SPP *arg1 = (SPP *) 0 ;
@@ -11807,7 +12045,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_SPP_find_contacts(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_SPP_find_cell_contacts(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   SPP *arg1 = (SPP *) 0 ;
   void *argp1 = 0 ;
@@ -11815,13 +12053,35 @@ SWIGINTERN PyObject *_wrap_SPP_find_contacts(PyObject *SWIGUNUSEDPARM(self), PyO
   PyObject * obj0 = 0 ;
   SwigValueWrapper< std::vector< std::tuple< int,int,float >,std::allocator< std::tuple< int,int,float > > > > result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:SPP_find_contacts",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:SPP_find_cell_contacts",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_SPP, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SPP_find_contacts" "', argument " "1"" of type '" "SPP *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SPP_find_cell_contacts" "', argument " "1"" of type '" "SPP *""'"); 
   }
   arg1 = reinterpret_cast< SPP * >(argp1);
-  result = (arg1)->find_contacts();
+  result = (arg1)->find_cell_contacts();
+  resultobj = SWIG_NewPointerObj((new std::vector< std::tuple< int,int,float >,std::allocator< std::tuple< int,int,float > > >(static_cast< const std::vector< std::tuple< int,int,float >,std::allocator< std::tuple< int,int,float > > >& >(result))), SWIGTYPE_p_std__vectorT_std__tupleT_int_int_float_t_std__allocatorT_std__tupleT_int_int_float_t_t_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_SPP_find_plane_contacts(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  SPP *arg1 = (SPP *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  SwigValueWrapper< std::vector< std::tuple< int,int,float >,std::allocator< std::tuple< int,int,float > > > > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:SPP_find_plane_contacts",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_SPP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SPP_find_plane_contacts" "', argument " "1"" of type '" "SPP *""'"); 
+  }
+  arg1 = reinterpret_cast< SPP * >(argp1);
+  result = (arg1)->find_plane_contacts();
   resultobj = SWIG_NewPointerObj((new std::vector< std::tuple< int,int,float >,std::allocator< std::tuple< int,int,float > > >(static_cast< const std::vector< std::tuple< int,int,float >,std::allocator< std::tuple< int,int,float > > >& >(result))), SWIGTYPE_p_std__vectorT_std__tupleT_int_int_float_t_std__allocatorT_std__tupleT_int_int_float_t_t_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
@@ -11833,14 +12093,18 @@ SWIGINTERN PyObject *_wrap_SPP_move_cells(PyObject *SWIGUNUSEDPARM(self), PyObje
   PyObject *resultobj = 0;
   SPP *arg1 = (SPP *) 0 ;
   SwigValueWrapper< std::vector< std::tuple< int,int,float >,std::allocator< std::tuple< int,int,float > > > > arg2 ;
+  SwigValueWrapper< std::vector< std::tuple< int,int,float >,std::allocator< std::tuple< int,int,float > > > > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 ;
   int res2 = 0 ;
+  void *argp3 ;
+  int res3 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:SPP_move_cells",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOO:SPP_move_cells",&obj0,&obj1,&obj2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_SPP, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SPP_move_cells" "', argument " "1"" of type '" "SPP *""'"); 
@@ -11859,7 +12123,20 @@ SWIGINTERN PyObject *_wrap_SPP_move_cells(PyObject *SWIGUNUSEDPARM(self), PyObje
       if (SWIG_IsNewObj(res2)) delete temp;
     }
   }
-  (arg1)->move_cells(arg2);
+  {
+    res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_std__vectorT_std__tupleT_int_int_float_t_std__allocatorT_std__tupleT_int_int_float_t_t_t,  0  | 0);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "SPP_move_cells" "', argument " "3"" of type '" "std::vector< std::tuple< int,int,float >,std::allocator< std::tuple< int,int,float > > >""'"); 
+    }  
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "SPP_move_cells" "', argument " "3"" of type '" "std::vector< std::tuple< int,int,float >,std::allocator< std::tuple< int,int,float > > >""'");
+    } else {
+      std::vector< std::tuple< int,int,float >,std::allocator< std::tuple< int,int,float > > > * temp = reinterpret_cast< std::vector< std::tuple< int,int,float >,std::allocator< std::tuple< int,int,float > > > * >(argp3);
+      arg3 = *temp;
+      if (SWIG_IsNewObj(res3)) delete temp;
+    }
+  }
+  (arg1)->move_cells(arg2,arg3);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -12005,6 +12282,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"delete_VecVecFloat", _wrap_delete_VecVecFloat, METH_VARARGS, NULL},
 	 { (char *)"VecVecFloat_swigregister", VecVecFloat_swigregister, METH_VARARGS, NULL},
 	 { (char *)"normalize", _wrap_normalize, METH_VARARGS, NULL},
+	 { (char *)"point_plane_distance", _wrap_point_plane_distance, METH_VARARGS, NULL},
 	 { (char *)"to_spherical", _wrap_to_spherical, METH_VARARGS, NULL},
 	 { (char *)"to_polar", _wrap_to_polar, METH_VARARGS, NULL},
 	 { (char *)"to_2Dcartesian", _wrap_to_2Dcartesian, METH_VARARGS, NULL},
@@ -12013,14 +12291,20 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"SPP_cell_centers_get", _wrap_SPP_cell_centers_get, METH_VARARGS, NULL},
 	 { (char *)"SPP_cell_directions_set", _wrap_SPP_cell_directions_set, METH_VARARGS, NULL},
 	 { (char *)"SPP_cell_directions_get", _wrap_SPP_cell_directions_get, METH_VARARGS, NULL},
+	 { (char *)"SPP_plane_pts_set", _wrap_SPP_plane_pts_set, METH_VARARGS, NULL},
+	 { (char *)"SPP_plane_pts_get", _wrap_SPP_plane_pts_get, METH_VARARGS, NULL},
+	 { (char *)"SPP_plane_norms_set", _wrap_SPP_plane_norms_set, METH_VARARGS, NULL},
+	 { (char *)"SPP_plane_norms_get", _wrap_SPP_plane_norms_get, METH_VARARGS, NULL},
 	 { (char *)"SPP_dt_set", _wrap_SPP_dt_set, METH_VARARGS, NULL},
 	 { (char *)"SPP_dt_get", _wrap_SPP_dt_get, METH_VARARGS, NULL},
 	 { (char *)"SPP_radius_set", _wrap_SPP_radius_set, METH_VARARGS, NULL},
 	 { (char *)"SPP_radius_get", _wrap_SPP_radius_get, METH_VARARGS, NULL},
 	 { (char *)"new_SPP", _wrap_new_SPP, METH_VARARGS, NULL},
 	 { (char *)"SPP_addCell", _wrap_SPP_addCell, METH_VARARGS, NULL},
+	 { (char *)"SPP_addPlane", _wrap_SPP_addPlane, METH_VARARGS, NULL},
 	 { (char *)"SPP_step", _wrap_SPP_step, METH_VARARGS, NULL},
-	 { (char *)"SPP_find_contacts", _wrap_SPP_find_contacts, METH_VARARGS, NULL},
+	 { (char *)"SPP_find_cell_contacts", _wrap_SPP_find_cell_contacts, METH_VARARGS, NULL},
+	 { (char *)"SPP_find_plane_contacts", _wrap_SPP_find_plane_contacts, METH_VARARGS, NULL},
 	 { (char *)"SPP_move_cells", _wrap_SPP_move_cells, METH_VARARGS, NULL},
 	 { (char *)"SPP_repolarize", _wrap_SPP_repolarize, METH_VARARGS, NULL},
 	 { (char *)"delete_SPP", _wrap_delete_SPP, METH_VARARGS, NULL},
@@ -12043,6 +12327,7 @@ static swig_type_info _swigt__p_std__invalid_argument = {"_p_std__invalid_argume
 static swig_type_info _swigt__p_std__tupleT_float_float_float_t = {"_p_std__tupleT_float_float_float_t", "std::tuple< float,float,float > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__tupleT_float_float_t = {"_p_std__tupleT_float_float_t", "std::tuple< float,float > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_float_std__allocatorT_float_t_t = {"_p_std__vectorT_float_std__allocatorT_float_t_t", "std::vector< float > *|std::vector< float,std::allocator< float > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_std__tupleT_float_float_float_t_std__allocatorT_std__tupleT_float_float_float_t_t_t = {"_p_std__vectorT_std__tupleT_float_float_float_t_std__allocatorT_std__tupleT_float_float_float_t_t_t", "std::vector< std::tuple< float,float,float >,std::allocator< std::tuple< float,float,float > > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__tupleT_int_int_float_t_std__allocatorT_std__tupleT_int_int_float_t_t_t = {"_p_std__vectorT_std__tupleT_int_int_float_t_std__allocatorT_std__tupleT_int_int_float_t_t_t", "std::vector< std::tuple< int,int,float >,std::allocator< std::tuple< int,int,float > > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t = {"_p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t", "std::vector< std::vector< float,std::allocator< float > >,std::allocator< std::vector< float,std::allocator< float > > > > *|std::vector< std::vector< float,std::allocator< float > > > *|std::vector< std::vector< float > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_swig__SwigPyIterator = {"_p_swig__SwigPyIterator", "swig::SwigPyIterator *", 0, 0, (void*)0, 0};
@@ -12061,6 +12346,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__tupleT_float_float_float_t,
   &_swigt__p_std__tupleT_float_float_t,
   &_swigt__p_std__vectorT_float_std__allocatorT_float_t_t,
+  &_swigt__p_std__vectorT_std__tupleT_float_float_float_t_std__allocatorT_std__tupleT_float_float_float_t_t_t,
   &_swigt__p_std__vectorT_std__tupleT_int_int_float_t_std__allocatorT_std__tupleT_int_int_float_t_t_t,
   &_swigt__p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t,
   &_swigt__p_swig__SwigPyIterator,
@@ -12079,6 +12365,7 @@ static swig_cast_info _swigc__p_std__invalid_argument[] = {  {&_swigt__p_std__in
 static swig_cast_info _swigc__p_std__tupleT_float_float_float_t[] = {  {&_swigt__p_std__tupleT_float_float_float_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__tupleT_float_float_t[] = {  {&_swigt__p_std__tupleT_float_float_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_float_std__allocatorT_float_t_t[] = {  {&_swigt__p_std__vectorT_float_std__allocatorT_float_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_std__tupleT_float_float_float_t_std__allocatorT_std__tupleT_float_float_float_t_t_t[] = {  {&_swigt__p_std__vectorT_std__tupleT_float_float_float_t_std__allocatorT_std__tupleT_float_float_float_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__tupleT_int_int_float_t_std__allocatorT_std__tupleT_int_int_float_t_t_t[] = {  {&_swigt__p_std__vectorT_std__tupleT_int_int_float_t_std__allocatorT_std__tupleT_int_int_float_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t[] = {  {&_swigt__p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_swig__SwigPyIterator[] = {  {&_swigt__p_swig__SwigPyIterator, 0, 0, 0},{0, 0, 0, 0}};
@@ -12097,6 +12384,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__tupleT_float_float_float_t,
   _swigc__p_std__tupleT_float_float_t,
   _swigc__p_std__vectorT_float_std__allocatorT_float_t_t,
+  _swigc__p_std__vectorT_std__tupleT_float_float_float_t_std__allocatorT_std__tupleT_float_float_float_t_t_t,
   _swigc__p_std__vectorT_std__tupleT_int_int_float_t_std__allocatorT_std__tupleT_int_int_float_t_t_t,
   _swigc__p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t,
   _swigc__p_swig__SwigPyIterator,
