@@ -334,6 +334,9 @@ visualised.
         cs.cellAdh = cellAdh
         cs.idx = self.next_idx()
         cs.pos = [pos[i] for i in range(3)]
+        cs.dir = [dir[i] for i in range(3)]
+        cs.radius = self.phys.radius
+        cs.avg_neighbour_dir = 0
         self.idToIdx[cid] = cs.idx
         self.idxToId[cs.idx] = cid
         self.cellStates[cid] = cs
